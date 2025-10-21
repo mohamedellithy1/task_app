@@ -100,38 +100,73 @@ class _HomePageState extends State<HomePage> {
         return Scaffold(
           appBar: _buildAppBar(isMobile),
           drawer: isMobile ? _buildDrawer() : null,
-          body: BlocListener<TaskCubit, TaskState>(
-            listener: (context, state) {
-              if (state is TaskOperationSuccess) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message, style: GoogleFonts.poppins()),
-                    backgroundColor: AppColors.success,
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.grey.shade50, Colors.white],
+              ),
+            ),
+            child: BlocListener<TaskCubit, TaskState>(
+              listener: (context, state) {
+                if (state is TaskOperationSuccess) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Row(
+                        children: [
+                          Icon(Icons.check_circle, color: Colors.white),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              state.message,
+                              style: GoogleFonts.poppins(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                      backgroundColor: AppColors.success,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      margin: const EdgeInsets.all(16),
+                      duration: const Duration(seconds: 3),
                     ),
-                  ),
-                );
-              } else if (state is TaskError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message, style: GoogleFonts.poppins()),
-                    backgroundColor: AppColors.error,
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                  );
+                } else if (state is TaskError) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Row(
+                        children: [
+                          Icon(Icons.error, color: Colors.white),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              state.message,
+                              style: GoogleFonts.poppins(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                      backgroundColor: AppColors.error,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      margin: const EdgeInsets.all(16),
+                      duration: const Duration(seconds: 4),
                     ),
-                  ),
-                );
-              }
-            },
-            child: Row(
-              children: [
-                if (!isMobile) _buildSidebar(),
+                  );
+                }
+              },
+              child: Row(
+                children: [
+                  if (!isMobile) _buildSidebar(),
 
-                Expanded(child: _buildMainContent(isMobile)),
-              ],
+                  Expanded(child: _buildMainContent(isMobile)),
+                ],
+              ),
             ),
           ),
           floatingActionButton: _buildFAB(isMobile),
@@ -142,33 +177,73 @@ class _HomePageState extends State<HomePage> {
 
   PreferredSizeWidget _buildAppBar(bool isMobile) {
     return AppBar(
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              AppColors.primary.withOpacity(0.1),
+              AppColors.secondary.withOpacity(0.1),
+            ],
+          ),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.8),
+            border: Border(
+              bottom: BorderSide(color: Colors.grey.withOpacity(0.2), width: 1),
+            ),
+          ),
+        ),
+      ),
       title: Text(
         'appTitle'.tr(),
-        style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+        style: GoogleFonts.poppins(
+          fontWeight: FontWeight.w700,
+          fontSize: 24,
+          color: AppColors.primary,
+        ),
       ),
       actions: [
-        IconButton(
-          icon: const Icon(Icons.search),
-          onPressed: _showSearchDialog,
-          tooltip: 'searchTasks'.tr(),
+        Container(
+          margin: const EdgeInsets.only(right: 8),
+          decoration: BoxDecoration(
+            color: AppColors.primary.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: IconButton(
+            icon: Icon(Icons.search, color: AppColors.primary),
+            onPressed: _showSearchDialog,
+            tooltip: 'searchTasks'.tr(),
+          ),
         ),
-      
         BlocBuilder<LanguageCubit, Locale>(
           builder: (context, locale) {
-            return IconButton(
-              icon: Text(
-                locale.languageCode == 'ar' ? 'EN' : 'ع',
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
+            return Container(
+              margin: const EdgeInsets.only(right: 16),
+              decoration: BoxDecoration(
+                color: AppColors.secondary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
               ),
-              onPressed: () async {
-                final cubit = context.read<LanguageCubit>();
-                await cubit.toggleLanguage();
-                await context.setLocale(cubit.state);
-              },
-              tooltip: 'language'.tr(),
+              child: IconButton(
+                icon: Text(
+                  locale.languageCode == 'ar' ? 'EN' : 'ع',
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: AppColors.secondary,
+                  ),
+                ),
+                onPressed: () async {
+                  final cubit = context.read<LanguageCubit>();
+                  await cubit.toggleLanguage();
+                  await context.setLocale(cubit.state);
+                },
+                tooltip: 'language'.tr(),
+              ),
             );
           },
         ),
@@ -194,8 +269,7 @@ class _HomePageState extends State<HomePage> {
               context.read<TaskCubit>().toggleShowCompletedOnly();
             }
           },
-          onSettingsPressed: () {
-          },
+          onSettingsPressed: () {},
         );
       },
     );
@@ -362,16 +436,59 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildFAB(bool isMobile) {
     return isMobile
-        ? FloatingActionButton(
-            onPressed: () => _showAddTaskSheet(),
-            child: const Icon(Icons.add),
+        ? Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [AppColors.primary, AppColors.secondary],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withOpacity(0.3),
+                  blurRadius: 20,
+                  offset: const Offset(0, 8),
+                  spreadRadius: 0,
+                ),
+              ],
+            ),
+            child: FloatingActionButton(
+              onPressed: () => _showAddTaskSheet(),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              child: const Icon(Icons.add, color: Colors.white),
+            ),
           )
-        : FloatingActionButton.extended(
-            onPressed: () => _showAddTaskSheet(),
-            icon: const Icon(Icons.add),
-            label: Text(
-              'addTask'.tr(),
-              style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+        : Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [AppColors.primary, AppColors.secondary],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withOpacity(0.3),
+                  blurRadius: 20,
+                  offset: const Offset(0, 8),
+                  spreadRadius: 0,
+                ),
+              ],
+            ),
+            child: FloatingActionButton.extended(
+              onPressed: () => _showAddTaskSheet(),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              icon: const Icon(Icons.add, color: Colors.white),
+              label: Text(
+                'addTask'.tr(),
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
             ),
           );
   }

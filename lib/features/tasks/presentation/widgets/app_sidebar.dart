@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -64,20 +65,20 @@ class AppSidebar extends StatelessWidget {
               children: [
                 _SidebarItem(
                   icon: Icons.home,
-                  title: 'Home',
+                  title: 'home'.tr(),
                   isSelected: !showCompletedOnly,
                   onTap: onHomePressed,
                 ),
                 _SidebarItem(
                   icon: Icons.check_circle,
-                  title: 'Completed Tasks',
+                  title: 'completedTasks'.tr(),
                   isSelected: showCompletedOnly,
                   onTap: onCompletedPressed,
                 ),
                 const Divider(height: 32),
                 _SidebarItem(
                   icon: Icons.settings,
-                  title: 'Settings',
+                  title: 'settings'.tr(),
                   isSelected: false,
                   onTap: onSettingsPressed,
                 ),
@@ -97,7 +98,7 @@ class AppSidebar extends StatelessWidget {
                     color: AppColors.primary,
                   ),
                   title: Text(
-                    'Dark Mode',
+                    'darkMode'.tr(),
                     style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
                   ),
                   trailing: Switch(

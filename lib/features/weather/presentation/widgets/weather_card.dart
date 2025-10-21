@@ -109,24 +109,31 @@ class WeatherCard extends StatelessWidget {
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: _getWeatherGradient(),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 30,
+            offset: const Offset(0, 15),
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: Colors.white.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, -5),
+            spreadRadius: 0,
           ),
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(28),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
           child: Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(28),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(24),
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(28),
               border: Border.all(
                 color: Colors.white.withOpacity(0.2),
                 width: 1.5,
@@ -185,25 +192,63 @@ class WeatherCard extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    Icon(
-                      _getWeatherIcon(),
-                      size: 80,
-                      color: Colors.white.withOpacity(0.9),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.3),
+                          width: 1,
+                        ),
+                      ),
+                      child: Icon(
+                        _getWeatherIcon(),
+                        size: 80,
+                        color: Colors.white,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (onCitySearch != null)
-                          IconButton(
-                            onPressed: () => _showCitySearchDialog(context),
-                            icon: const Icon(Icons.search, color: Colors.white),
-                            tooltip: 'searchCity'.tr(),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.3),
+                                width: 1,
+                              ),
+                            ),
+                            child: IconButton(
+                              onPressed: () => _showCitySearchDialog(context),
+                              icon: const Icon(
+                                Icons.search,
+                                color: Colors.white,
+                              ),
+                              tooltip: 'searchCity'.tr(),
+                            ),
                           ),
-                        IconButton(
-                          onPressed: onRefresh,
-                          icon: const Icon(Icons.refresh, color: Colors.white),
-                          tooltip: 'refresh'.tr(),
+                        const SizedBox(width: 8),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.3),
+                              width: 1,
+                            ),
+                          ),
+                          child: IconButton(
+                            onPressed: onRefresh,
+                            icon: const Icon(
+                              Icons.refresh,
+                              color: Colors.white,
+                            ),
+                            tooltip: 'refresh'.tr(),
+                          ),
                         ),
                       ],
                     ),

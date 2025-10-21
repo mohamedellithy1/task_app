@@ -73,5 +73,7 @@
   "addNewTask": "Add New Task", 
   "noCompletedTasksYet": "No completed tasks yet", 
   "enterSearchQuery": "Enter search query",
-  "taskProgress": "Task Progress"
+  "taskProgress": "Task Progress",
+  "darkMode": "Dark Mode",
+  "home": "Home"
 }
